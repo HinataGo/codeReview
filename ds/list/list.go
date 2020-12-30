@@ -20,6 +20,7 @@ type LinkList struct {
 func New() *LinkList {
 	return &LinkList{
 		dummyHead: &Node{},
+		size:      0,
 	}
 }
 
@@ -35,7 +36,14 @@ func New() *LinkList {
 
 // 指定index插入元素,不常用
 func (l *LinkList) Add(index int, value interface{}) {
-	CheckErr(index, l)
+	if index > l.size {
+		return
+	}
+	if index < 0 {
+		index = 0
+	}
+	// 扩大尺寸
+	l.size++
 	// 先存储dummyHead
 	prev := l.dummyHead
 	// 添加元素,找到目标index 前一个
@@ -47,8 +55,22 @@ func (l *LinkList) Add(index int, value interface{}) {
 	// prev.next = Node3
 	// 优化写法
 	prev.next = &Node{value, prev.next}
-	l.size++
 
+}
+func (l *LinkList) AddFirst(val int) {
+	l.Add(0, val)
+}
+func (l *LinkList) AddTail(val int) {
+	l.Add(l.size, val)
+}
+
+func (l *LinkList) Get(val int) interface{} {
+	CheckErr(val, l)
+	cur := l.dummyHead
+	for i := 0; i < val+1; i++ {
+		cur = cur.next
+	}
+	return cur.val
 }
 func (l *LinkList) Remove(index int) interface{} {
 	CheckErr(index, l)
