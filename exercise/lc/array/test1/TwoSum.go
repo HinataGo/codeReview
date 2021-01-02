@@ -23,7 +23,7 @@ func twoSum(nums []int, target int) []int {
 		if k, v := table[other]; v {
 			return []int{k, i}
 		}
-		table[i] = i
+		table[nums[i]] = i
 	}
 	// for i,x := range nums{
 	//	if k, v := table[target - x]; v {

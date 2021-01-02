@@ -2,6 +2,8 @@ package concurrency
 
 import (
 	"fmt"
+	"math/rand"
+	"sync"
 	"testing"
 	"time"
 )
@@ -40,6 +42,36 @@ func createWorker(id int) chan<- int {
 	return c
 }
 
-func chanDemo() {
+var ticket = 10
+var wg sync.WaitGroup
+var mutex1 sync.Mutex // 创建锁头
 
+func sale(s string) {
+
+	rand.Seed(time.Now().UnixNano())
+	defer wg.Done()
+	for {
+		mutex1.Lock()
+		if ticket > 0 {
+			time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
+			fmt.Println(s, "售出", ticket)
+			ticket--
+		} else {
+			mutex1.Unlock()
+			fmt.Println(s, "all selled")
+			break
+		}
+		mutex1.Unlock()
+	}
+}
+func TestSell(t *testing.T) {
+	// 4个goroutine，模拟4个售票口，4个子程序操作同一个共享数据。
+
+	wg.Add(4)
+	go sale("售票口1")
+	go sale("售票口2")
+	go sale("售票口3")
+	go sale("售票口4")
+	wg.Wait()
+	// time.Sleep(5.*time.Second)
 }

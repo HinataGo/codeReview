@@ -30,8 +30,6 @@ func qSort(arr []int, l, r int) {
 	qSort(arr, p+1, r)
 }
 
-// 非递归
-// 1.找枢轴,默认第一个 2.对比数字 3.i,j交换 4.i,j移动 重叠退出 返回结果
 func quickSort(arr []int, left, right int) []int {
 	if left < right {
 		i := qs(arr, left, right)
@@ -41,6 +39,8 @@ func quickSort(arr []int, left, right int) []int {
 	return arr
 }
 
+// 非递归
+// 1.找枢轴,默认第一个 2.对比数字 3.i,j交换 4.i,j移动 重叠退出 返回结果
 func qs(arr []int, left, right int) int {
 	l := left
 	r := l + 1
