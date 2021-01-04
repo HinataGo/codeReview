@@ -4,8 +4,8 @@ package main
 // 进阶：你能设计一个时间复杂度为 O(log (m+n)) 的算法解决此问题吗？
 //
 
-//思路1. 归并排序题目要求复杂度在log（n）,排除
-//思路2. 二分查找 (题目已经正序排序了)
+// 思路1. 归并排序题目要求复杂度在log（n）,排除
+// 思路2. 二分查找 (题目已经正序排序了)
 //
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 	// 假设 nums1 的长度小
