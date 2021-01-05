@@ -16,3 +16,5 @@ vcs.xml
 ./.idea/
 
 ./tmp/
+/.idea/codestream.xml
+/.idea/leetcode/editor.xml
