@@ -12,25 +12,12 @@ package main
 // 两种写法 熟悉下语法，思路一致
 
 func twoSum(nums []int, target int) []int {
-	// 第一部分可有可无
-	// if len(nums) <= 1 {
-	//	return []int{0, 0}
-	//  }
-	table := make(map[int]int)
-	// table := map[int]int{}
-	for i := 0; i < len(nums); i++ {
-		other := target - nums[i]
-		if k, v := table[other]; v {
+	m := make(map[int]int)
+	for i, v := range nums {
+		if k, ok := m[target-v]; ok {
 			return []int{k, i}
 		}
-		table[nums[i]] = i
+		m[v] = i
 	}
-	// for i,x := range nums{
-	//	if k, v := table[target - x]; v {
-	//		return []int{k, i}
-	//	}
-	//	table[x] = i
-	// }
-
 	return nil
 }

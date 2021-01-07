@@ -19,7 +19,7 @@ var a2, b2 = 1, "b2"
 // global var not support 简短定义
 // a3 := 1
 
-// write test func
+// write test206 func
 func TestVar(t *testing.T) {
 	// 简短定义的局部变量必须使用,否则err (1.显示初始化, 2.不能提供数据类型提供也没用 3.智能在函数内部定义)
 	// a4 := 4
