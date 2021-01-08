@@ -15,26 +15,39 @@ package writte
 // 如果你不使用额外的数据结构，会很加分。
 
 // 第一步先写暴力解法 暴力解法
+func isUnique(astr string) bool {
+	// 这不判断加分
+	if len(astr) == 0 {
+		return true
+	}
+	// 暴力求解,第一步加分
+	for i := range astr {
+		for j := i + 1; j < len(astr); j++ {
+			if astr[i] == astr[j] {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+// 先排序 ,在对比前后字符是否相同 ,不同true ,相同 返回false ,特别大的用快排,其实小点儿的不必优化
+
+// 这里位运算默认是 26字母 ,但是其实不能这么直接做
 // func isUnique(astr string) bool {
-// 	// 这不判断加分
 // 	if len(astr) == 0 {
 // 		return true
 // 	}
-// 	// 暴力求解,第一步加分
-// 	for i := range astr {
-// 		for j := i + 1; j < len(astr); j++ {
-// 			if astr[i] == astr[j] {
-// 				return false
-// 			}
+// 	num := 0
+// 	for _, v := range astr {
+// 		// 相对于 a  的偏移量
+// 		moveBit := v - 'a'
+// 		// 将1 左移 偏移量个 位 , 1 后面补上 偏移量个 0 ,与 num 相 & 是否为0?
+// 		if num&(1<<moveBit) != 0 {
+// 			return false
+// 		} else {
+// 			num = num | (1 << moveBit)
 // 		}
 // 	}
 // 	return true
-// }
-
-// 先排序 ,在对比前后字符是否相同 ,不同true ,相同 返回false
-// func isUnique(astr string) bool {
-// 	if len(astr) == 0 {
-// 		return true
-// 	}
-//
 // }
