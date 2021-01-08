@@ -11,7 +11,7 @@ func maxSubArray(nums []int) int {
 		if nums[i]+nums[i-1] > nums[i] {
 			nums[i] += nums[i-1]
 		}
-		// 去较大的结果进行保留
+		// 取较大的结果进行保留
 		if nums[i] > res {
 			res = nums[i]
 		}
