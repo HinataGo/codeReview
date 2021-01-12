@@ -1,4 +1,4 @@
-package writte
+package write
 
 // 面试题 01. 判定字符是否唯一
 
