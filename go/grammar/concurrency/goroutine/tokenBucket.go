@@ -18,8 +18,8 @@ type TokenBucket struct {
 	interval          time.Duration // 时间间隔
 	ticker            *time.Ticker  // 定时器 timer
 	tokenMutex        *sync.Mutex   // 令牌锁
-	waitingQuqueMutex *sync.Mutex   // 等到操作的队列
-	waitingQuque      *list.List    // 列队的锁
+	waitingQueueMutex *sync.Mutex   // 等到操作的队列
+	waitingQueue      *list.List    // 列队的锁
 	cap               int64         // 桶总容量
 	avail             int64         // 桶内现有令牌数
 }
@@ -44,8 +44,8 @@ func New(interval time.Duration, cap int64) *TokenBucket {
 	tb := &TokenBucket{
 		interval:          interval,
 		tokenMutex:        &sync.Mutex{},
-		waitingQuqueMutex: &sync.Mutex{},
-		waitingQuque:      list.New(),
+		waitingQueueMutex: &sync.Mutex{},
+		waitingQueue:      list.New(),
 		cap:               cap,
 		avail:             cap,
 		ticker:            time.NewTicker(interval),
@@ -194,22 +194,22 @@ func (tb *TokenBucket) adjustDaemon() {
 }
 
 func (tb *TokenBucket) addWaitingJob(w *waitingJob) {
-	tb.waitingQuqueMutex.Lock()
-	tb.waitingQuque.PushBack(w)
-	tb.waitingQuqueMutex.Unlock()
+	tb.waitingQueueMutex.Lock()
+	tb.waitingQueue.PushBack(w)
+	tb.waitingQueueMutex.Unlock()
 }
 
 func (tb *TokenBucket) getFrontWaitingJob() *list.Element {
-	tb.waitingQuqueMutex.Lock()
-	e := tb.waitingQuque.Front()
-	tb.waitingQuqueMutex.Unlock()
+	tb.waitingQueueMutex.Lock()
+	e := tb.waitingQueue.Front()
+	tb.waitingQueueMutex.Unlock()
 	return e
 }
 
 func (tb *TokenBucket) removeWaitingJob(e *list.Element) {
-	tb.waitingQuqueMutex.Lock()
-	tb.waitingQuque.Remove(e)
-	tb.waitingQuqueMutex.Unlock()
+	tb.waitingQueueMutex.Lock()
+	tb.waitingQueue.Remove(e)
+	tb.waitingQueueMutex.Unlock()
 }
 
 func (tb *TokenBucket) checkCount(count int64) {
