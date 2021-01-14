@@ -3,7 +3,8 @@ package linkedlist
 // 单项 linked list ,双向链表 go源码有
 // 定义一个元素节点,节点存储值以及下个节点的地址索引
 type Node struct {
-	val  interface{}
+	val interface{}
+	// list *LinkList  源码中用这个指代自己从属于那个链表
 	next *Node
 }
 
@@ -18,10 +19,14 @@ type LinkList struct {
 
 // 定义一个链表的函数
 func New() *LinkList {
-	return &LinkList{
-		dummyHead: &Node{},
-		size:      0,
-	}
+	return new(LinkList).InitList()
+}
+
+// init方法 ，注意不要和golang 的init冲突
+func (l *LinkList) InitList() *LinkList {
+	l.dummyHead.next = l.dummyHead
+	l.size = 0
+	return l
 }
 
 // 这里给出一种双向链表的写法,对比上面学习,这是go的struct语法糖

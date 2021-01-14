@@ -22,7 +22,9 @@ type List struct {
 }
 
 // New returns an initialized list.
-func NewDL() *List { return new(List).Init() }
+func NewDL() *List {
+	return new(List).Init()
+}
 
 // Init initializes or clears list l.
 func (l *List) Init() *List {
