@@ -28,6 +28,7 @@ func isUnique(astr string) bool {
 			}
 		}
 	}
+
 	return true
 }
 

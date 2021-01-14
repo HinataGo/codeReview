@@ -1,4 +1,4 @@
-package linked
+package linkedlist
 
 // 单项 linked list ,双向链表 go源码有
 // 定义一个元素节点,节点存储值以及下个节点的地址索引

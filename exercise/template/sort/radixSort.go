@@ -1,4 +1,4 @@
-package code
+package sort
 
 import "strconv"
 

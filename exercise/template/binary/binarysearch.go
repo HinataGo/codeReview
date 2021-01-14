@@ -1,4 +1,4 @@
-package code
+package binary
 
 type binarySearch struct {
 	Data []int

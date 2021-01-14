@@ -1,4 +1,4 @@
-package code
+package sort
 
 // 旧版
 // func bubbleSort(arr []int) []int {

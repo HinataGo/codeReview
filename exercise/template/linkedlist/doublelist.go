@@ -1,4 +1,4 @@
-package linked
+package linkedlist
 
 // copy from  golang source
 
