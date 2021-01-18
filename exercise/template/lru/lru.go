@@ -97,7 +97,7 @@ func (lru *LRUCache) removeNode(node *dListNode) {
 }
 
 func (lru *LRUCache) moveToHead(node *dListNode) {
-	// 一定得先删,后添加
+	// 一定得先删,后移动到头结点
 	lru.removeNode(node)
 	lru.addToHead(node)
 }
