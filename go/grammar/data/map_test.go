@@ -7,6 +7,7 @@ import (
 
 func TestMap(t *testing.T) {
 	m1 := make(map[string]int, 10) // size / len 10 , key string ,value int
+
 	m1["a"] = 1
 	m1["a"]++ // m1["a"]  = m1["a"] + 1
 	m2 := make(map[string]string)
