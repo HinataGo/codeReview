@@ -32,7 +32,7 @@ func TestTime(t *testing.T) {
 	       time-->string
 	           t1.Format(layout string)-->string
 	       string-->time
-	           time.Parse(layout string, value string)-->time,error
+	           time.Parse(layout string, value string)-->time,errors
 
 	   C：时间戳：timeStamp
 	       t1.Unix()

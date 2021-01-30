@@ -2,6 +2,9 @@ package _interface
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"sort"
 	"testing"
 )
 
@@ -111,5 +114,102 @@ func TestAssertion(t *testing.T) {
 	default:
 		fmt.Println("整型数据。。")
 	}
+}
 
+// 自定义打印机可以通过String方法实现，而Fprintf可以使用Write方法生成任何内容的输出。
+type Sequence []int
+
+// Methods required by sort.Interface.
+func (s Sequence) Len() int {
+	return len(s)
+}
+func (s Sequence) Less(i, j int) bool {
+	return s[i] < s[j]
+}
+func (s Sequence) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+// Copy returns a copy of the Sequence.
+func (s Sequence) Copy() Sequence {
+	copy := make(Sequence, 0, len(s))
+	return append(copy, s...)
+}
+
+// Method for printing - sorts the elements before printing.
+// func (s Sequence) String() string {
+// 	s = s.Copy() // Make a copy; don't overwrite argument.
+// 	sort.Sort(s)
+// 	str := "["
+// 	for i, elem := range s { // Loop is O(N²); will fix that in next example.
+// 		if i > 0 {
+// 			str += " "
+// 		}
+// 		str += fmt.Sprint(elem)
+// 	}
+// 	return str + "]"
+// }
+
+// 上面那个复杂度太高,这个是修改版
+// Go程序中，习惯用法是转换表达式的类型以访问不同的方法集
+func (s Sequence) String() string {
+	s = s.Copy()
+
+	// sort.Sort(s)
+	// return fmt.Sprint([]int(s))
+
+	// IntSlice将Interface的方法附加到[] int，并按升序排序
+	// 和上面功能类似
+	sort.IntSlice(s).Sort()
+	return fmt.Sprint([]int(s))
+}
+
+// 在实践中，这种情况较不常见，但可以有效。
+func TestS(t *testing.T) {
+	var arr []int
+	arr = []int{1, 4, 2}
+	v := Sequence.String(arr)
+	fmt.Println(v)
+}
+
+// Simple counter server.
+type Counter struct {
+	n int
+}
+
+// 在真实服务器中，访问ctr.n需要防止并发访问。 请参阅sync和atomic软件包以获取建议。
+func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	ctr.n++
+	fmt.Fprintf(w, "counter = %d\n", ctr.n)
+}
+
+// 但是为什么要把Counter作为一个结构呢？ 整数就足够了。
+// （接收方必须是一个指针，这样增量才能对调用方可见。）
+// Simpler counter server.
+type Counter1 int
+
+func (ctr *Counter1) ServeHTTP2(w http.ResponseWriter, req *http.Request) {
+	*ctr++
+	fmt.Fprintf(w, "counter = %d\n", *ctr)
+}
+
+// 如果您的程序有一些内部状态需要通知已访问页面怎么办？
+// 将频道绑定到网页。
+// A channel that sends a notification on each visit.
+// (Probably want the channel to be buffered.)
+// 每次访问都会发送通知的渠道。
+// 可能希望通道被缓冲
+type Chan chan *http.Request
+
+func (ch Chan) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	ch <- req
+	fmt.Fprint(w, "notification sent")
+}
+
+// Argument server.
+func ArgServer(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintln(w, os.Args)
+}
+func TestHttp1(t *testing.T) {
+	http.Handle("/args", http.HandlerFunc(ArgServer))
 }

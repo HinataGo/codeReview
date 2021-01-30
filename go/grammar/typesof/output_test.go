@@ -57,5 +57,5 @@ func TestOutput(test *testing.T) {
 	s := fmt.Sprintf("a %s", "string")
 	fmt.Println(s)
 	// 你可以使用 Fprintf 来格式化并输出到 io.Writers而不是 os.Stdout。
-	fmt.Fprintf(os.Stderr, "an %s\n", "error")
+	fmt.Fprintf(os.Stderr, "an %s\n", "errors")
 }

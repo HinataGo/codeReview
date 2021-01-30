@@ -3,6 +3,7 @@ package method
 import (
 	"fmt"
 	"math"
+	"os"
 	"testing"
 )
 
@@ -22,6 +23,7 @@ import (
 // 也就是说，不管方法的接收者是什么类型，该类型的值和指针都可以调用，不必严格符合接收者的类型。
 
 // 定义方法
+// 这里并没有限制必须是 结构体,可以是任意类型座位接收者
 // func (t Type) methodName(parameter list)(return list) {
 //
 // }
@@ -146,4 +148,38 @@ func TestExtend(t *testing.T) {
 	mark.SayHi()
 	sam := Employee1{Human{"Sam", 45, "111-888-XXXX"}, "Golang Inc"}
 	sam.SayHi()
+}
+
+// 官网示例
+// 我们传递ByteSlice的地址，因为只有* ByteSlice满足io.Writer。
+// 可以在指针和值上调用值方法，但是只能在指针上调用指针方法。
+// 指针方法可以修改接收者
+// 值上调用它们将导致该方法接收该值的副本，因此任何修改都将被丢弃
+type ByteSlice []byte
+
+func (s ByteSlice) Append(data []byte) []byte {
+	// Body exactly the same as the Append function defined above.
+	return s.Append(data)
+}
+func (s *ByteSlice) Write(data []byte) (n int, err error) {
+	slice := *s
+	// Again as above.
+	*s = slice
+	return len(data), nil
+}
+
+// ps:当值是可寻址的时，该语言将通过自动插入地址运算符来处理在值上调用指针方法的常见情况。
+// 在我们的示例中，变量b是可寻址的，因此我们可以仅使用b.Write调用其Write方法。
+// 编译器会将其重写为（＆b）.Write给我们
+// 在字节的一部分上使用Write的想法对于bytes.Buffer的实现至关重要
+func TestSpecial(t *testing.T) {
+	var b ByteSlice
+	_, _ = fmt.Fprintf(&b, "This hour has %d days\n", 7)
+	fmt.Println(b)
+	v, err := fmt.Fprintf(&b, "This hour has %d days\n", 7)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Fprintf: %v\n", err)
+	}
+	(&b).Write([]byte{7})
+	fmt.Printf("%d bytes written.\n", v)
 }

@@ -127,7 +127,7 @@ func main() {
 ### 8. nil
 ```bazaar
 #Cannot assign nil without explicit type
-# 正确做法在 x 后面加 var x interface{}= nil / var x error = nil
+# 正确做法在 x 后面加 var x interface{}= nil / var x errors = nil
 var x = nil
 // nil 值。nil 只能赋值给指针、chan、func、interface、map 或 slice 类型的变量。强调下 var x error = nil 选项的 error 类型，它是一种内置接口类型，看下方贴出的源码就知道，所以 var x error = nil 是对的。
 // 源码

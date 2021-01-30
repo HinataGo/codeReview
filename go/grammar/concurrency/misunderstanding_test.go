@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// fatal error: all goroutines are asleep - deadlock
+// fatal errors: all goroutines are asleep - deadlock
 
 // 对于同一无缓冲通道，在接收者未准备好之前，发送操作是阻塞的。而此处的通道ch就是缺少一个配对的接收者，因此造成了死锁。
 
