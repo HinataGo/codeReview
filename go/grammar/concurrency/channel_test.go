@@ -21,9 +21,9 @@ type Request struct {
 }
 
 func handle(r *Request) {
-	sem <- 1   // Wait for active queue to drain.
-	process(r) // May take a long time.
-	<-sem      // Done; enable next request to run.
+	sem <- 1 // Wait for active queue to drain.
+	// process(r) // May take a long time.
+	<-sem // Done; enable next request to run.
 }
 
 func Serve1(queue chan *Request) {
@@ -38,13 +38,13 @@ func Serve1(queue chan *Request) {
 // 如此一来，如果请求太快，程序可能会消耗无限的资源。
 // 我们可以通过更改服务以控制goroutine的创建来解决该缺陷。 这是一个显而易见的解决方案，
 func Serve2(queue chan *Request) {
-	for req := range queue {
-		sem <- 1
-		go func() {
-			process(req) // Buggy; see explanation below.
-			<-sem
-		}()
-	}
+	// for req := range queue {
+	// 	sem <- 1
+	// 	go func() {
+	// 		// process(req) // Buggy; see explanation below.
+	// 		<-sem
+	// 	}()
+	// }
 }
 
 // 3. 错误在于，在Go for循环中，循环变量将在每次迭代中重复使用，
@@ -55,7 +55,7 @@ func Serve3(queue chan *Request) {
 	for req := range queue {
 		sem <- 1
 		go func(req *Request) {
-			process(req)
+			// process(req)
 			<-sem
 		}(req)
 	}
@@ -64,17 +64,17 @@ func Serve3(queue chan *Request) {
 // 4. 将此版本与先前版本进行比较，以了解在声明和运行闭包的方式上的差异。
 // 另一个解决方案是仅创建一个具有相同名称的新变量，如下例所示：
 func Serve4(queue chan *Request) {
-	for req := range queue {
-		// 为goroutine创建新的req实例
-		// Create new instance of req for the goroutine.
-
-		req := req
-		sem <- 1
-		go func() {
-			process(req)
-			<-sem
-		}()
-	}
+	// for req := range queue {
+	// 	// 为goroutine创建新的req实例
+	// 	// Create new instance of req for the goroutine.
+	//
+	// 	req := req
+	// 	sem <- 1
+	// 	go func() {
+	// 		// process(req)
+	// 		<-sem
+	// 	}()
+	// }
 }
 
 // 这很奇怪
@@ -89,9 +89,9 @@ func Serve4(queue chan *Request) {
 // 该Serve函数还接受一个将告知其退出的通道；
 // 启动goroutines后，它将阻止从该通道接收。
 func handle5(queue chan *Request) {
-	for r := range queue {
-		process(r) // 待处理的任务
-	}
+	// for r := range queue {
+	// 	// process(r) // 待处理的任务
+	// }
 }
 
 func Serve5(clientRequests chan *Request, quit chan bool) {
