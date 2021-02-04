@@ -6,3 +6,7 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+/dataSources/5d1a8472-8221-43b0-bd7b-d9743b050987.xml
+/dataSources/5d1a8472-8221-43b0-bd7b-d9743b050987/storage_v2/_src_/schema/information_schema.FNRwLQ.meta
+/dataSources/5d1a8472-8221-43b0-bd7b-d9743b050987/storage_v2/_src_/schema/go_learn.LXCqYw.meta
+/dataSources.xml
