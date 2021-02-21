@@ -26,7 +26,7 @@ func (l *List) MoveToBack(e *Element)
     在每个ele中都会存储当前属于的list指针; 这样就避免了内存泄露风险
     (为了避免直接使用我们自己生成的元素，主要原因是避免链表的内部关联，遭到外界破坏)
     
-```bazaar
+```go
 func (l *List) Front() *Element
 func (l *List) Back() *Element
 
@@ -36,14 +36,14 @@ func (l *List) InsertAfter(v interface{}, mark *Element) *Element
 func (l *List) PushFront(v interface{}) *Element
 func (l *List) PushBack(v interface{}) *Element
 
-# PushFront、PushBack、InsertAfter、InsertBefore这些方法接收的参数都是interface{}，
-# 最后调用内部方法的时候，都会包装成&Element{Value: v} 这样去调用
-
-# Front和Back方法分别用于获取链表中最前端和最后端的元素
-# InsertBefore和InsertAfter方法分别用于在指定的元素之前和之后插入新元素
-# PushFront和PushBack方法则分别用于在链表的最前端和最后端插入新元素
-# 这些方法都会把一个Element值的指针作为结果返回，
-# 它们就是链表留给我们的安全“接口”。拿到这些内部元素的指针，我们就可以去调用前面提到的用于移动元素的方法了
+ // PushFront、PushBack、InsertAfter、InsertBefore这些方法接收的参数都是interface{}，
+ // 最后调用内部方法的时候，都会包装成&Element{Value: v} 这样去调用
+ // 
+ // Front和Back方法分别用于获取链表中最前端和最后端的元素
+ // InsertBefore和InsertAfter方法分别用于在指定的元素之前和之后插入新元素
+ // PushFront和PushBack方法则分别用于在链表的最前端和最后端插入新元素
+ // 这些方法都会把一个Element值的指针作为结果返回，
+ // 它们就是链表留给我们的安全“接口”。拿到这些内部元素的指针，我们就可以去调用前面提到的用于移动元素的方法了
 
 ```
 

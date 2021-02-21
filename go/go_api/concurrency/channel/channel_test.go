@@ -1,4 +1,4 @@
-package concurrency
+package channel
 
 // 官网示例,优化channel的反复创建
 const MaxOutstanding = 10
